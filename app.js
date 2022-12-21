@@ -1,4 +1,4 @@
-const canvas = document.querySelector("canvas"); // html의 캔버스를 JS로 추출하여 const canvas에 배정했습니다.
+const canvas = document.querySelector("canvas"); // html의 캔버스를 JS로 추출하여 상수인 canvas에 배정했습니다.
 
 const ctx = canvas.getContext("2d"); // canvas에서 그릴 그림의 종류를 2d로 지정했습니다.
 
@@ -29,16 +29,57 @@ canvas.height = 800;
 // ctx.fill(); // stroke, fill은 lineTo 아래에 있어야합니다. (투명으로 그려진 선에 색을 넣어주는 방식입니다.)
 // ~#1.4
 
-ctx.fillRect(170, 200 - 10, 15, 100);
-ctx.fillRect(310, 200 - 10, 15, 100);
-ctx.fillRect(220, 200 - 10, 60, 200);
-ctx.stroke();
+// ctx.fillRect(170, 200 - 10, 15, 100);
+// ctx.fillRect(310, 200 - 10, 15, 100);
+// ctx.fillRect(220, 200 - 10, 60, 200);
+// ctx.stroke();
 
-ctx.arc(250, 100, 50, 0, 2 * Math.PI); // arc는 원을 그리는 도구로써, (X, Y, 반지름, 시작 각, 끝 각)이 입력됩니다. 원을 그릴때는, 시작 각을 0으로 두고 끝 각을 상수 * Math.PI로 구성하면 됩니다.
-ctx.fill();
+// ctx.arc(250, 100, 50, 0, 2 * Math.PI); // arc는 원을 그리는 도구로써, (X, Y, 반지름, 시작 각, 끝 각)이 입력됩니다. 원을 그릴때는, 시작 각을 0으로 두고 끝 각을 상수 * Math.PI로 구성하면 됩니다.
+// ctx.fill();
 
-ctx.beginPath(); // 특정 그림에 색을 입히고자 한다면, beginPath를 이용하여 해당 그림을 독립적으로 만들어줘야합니다.
-ctx.fillStyle = "white"; // fillStyle은 그림의 색을 지정할 수 있습니다.
-ctx.arc(230, 90, 8, Math.PI, 2 * Math.PI);
-ctx.arc(270, 90, 8, Math.PI, 2 * Math.PI);
-ctx.fill();
+// ctx.beginPath(); // 특정 그림에 색을 입히고자 한다면, beginPath를 이용하여 해당 그림을 독립적으로 만들어줘야합니다.
+// ctx.fillStyle = "white"; // fillStyle은 그림의 색을 지정할 수 있습니다.
+// ctx.arc(230, 90, 8, Math.PI, 2 * Math.PI);
+// ctx.arc(270, 90, 8, Math.PI, 2 * Math.PI);
+// ctx.fill();
+// ~#1.5
+
+ctx.lineWidth = 2; // 그릴 선의 두께를 정했습니다.
+
+// 클릭시 캔버스에서 선이 그려지는 시작점이 달라지게 하기 위해 좌표값이 담긴 배열을 만들었습니다.
+const posX = ["0", "800", "400"];
+const posY = ["0", "800", "400"];
+let ranposX = posX[Math.floor(Math.random() * posX.length)]; // ranpos 함수는 pos 함수의 값을 무작위로 선택합니다.
+let ranposY = posY[Math.floor(Math.random() * posY.length)]; // ranpos 함수는 onClick 함수가 실행됐을때 값이 변해야 하기 때문에 let으로 선언했습니다.
+
+console.log(ranposX, ranposY);
+
+// 선을 그릴때 색을 입히기 위해 다양한 색이 담긴 배열을 만들었습니다.
+const colors = [
+  "#ff3838",
+  "#ffb8b8",
+  "#c56cf0",
+  "#ff9f1a",
+  "#fff200",
+  "#32ff7e",
+  "#7efff5",
+];
+
+function onMouseMove(event) {
+  // onMouseMove 함수는 addEventListener로 감지한 마우스 움직임 이벤트의 좌표값을 입력받아 선을 그립니다.
+  ctx.beginPath(); // strokeStyle이 변화될때 그려진 모든 선의 색상이 변경되는 것을 막기위해 선이 그려질때마다 beginPath를 입력합니다.
+  ctx.moveTo(ranposX, ranposY); //onMouseMove 함수가 첫 실행 될때, 선을 출력하기 위해 moveTo로 ctx의 초기 위치를 정했습니다.
+  const color = colors[Math.floor(Math.random() * colors.length)]; // color 함수는 colors 배열에서 값을 무작위로 선택합니다.
+  ctx.strokeStyle = color; // color 함수의 값을 stroke의 색으로 지정합니다.
+  ctx.lineTo(event.offsetX, event.offsetY);
+  ctx.stroke();
+}
+
+function onClick() {
+  // onClick 함수는 클릭 이벤트를 감지하여 선의 시작점을 바꿉니다.
+  ranposX = posX[Math.floor(Math.random() * posX.length)];
+  ranposY = posY[Math.floor(Math.random() * posY.length)];
+}
+
+canvas.addEventListener("mousemove", onMouseMove); // addEventLinstener로 캔버스 내에서 마우스의 클릭을 감지합니다.
+canvas.addEventListener("click", onClick);
