@@ -10,9 +10,20 @@ canvas.height = 800;
  채워진 사각형을 그렸습니다. fillRect(X좌표, Y좌표, 넓이, 높이) */
 // ctx.fillRect(50, 50, 100, 200);
 
-ctx.moveTo(50, 50); // moveTo 함수는 브러쉬를 지정된 자표로 이동시킵니다. (X, Y)
-ctx.lineTo(150, 50); // lineTo 함수는 지정된 위치까지 브러시를 이동시키며 선을 그립니다. (X, Y)
-ctx.lineTo(150, 150);
-ctx.lineTo(50, 150);
-ctx.lineTo(50, 50);
-ctx.fill(); // 그려진 사각형의 내부를 채웁니다.
+// ctx.moveTo(50, 50); // moveTo 함수는 브러쉬를 지정된 자표로 이동시킵니다. (X, Y)
+// ctx.lineTo(150, 50); // lineTo 함수는 지정된 위치까지 브러시를 이동시키며 선을 그립니다. (X, Y)
+// ctx.lineTo(150, 150);
+// ctx.lineTo(50, 150);
+// ctx.lineTo(50, 50);
+// ctx.fill(); // 그려진 사각형의 내부를 채웁니다.
+// ~#1.3
+
+ctx.fillRect(200, 200, 50, 200);
+ctx.fillRect(400, 200, 50, 200);
+ctx.lineWidth = 2; // lineWidth는 선의 두께를 지정합니다. (이 코드 아래부터 그려지는 선에 적용됩니다.)
+ctx.strokeRect(300, 300, 50, 100); // strokeRect는 중앙이 비어있는 사각형을 그립니다.
+ctx.fillRect(200, 200, 200, 20);
+ctx.moveTo(200, 200);
+ctx.lineTo(325, 100);
+ctx.lineTo(450, 200);
+ctx.fill(); // stroke, fill은 lineTo 아래에 있어야합니다.
