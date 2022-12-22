@@ -44,42 +44,71 @@ canvas.height = 800;
 // ctx.fill();
 // ~#1.5
 
-ctx.lineWidth = 2; // 그릴 선의 두께를 정했습니다.
+// ctx.lineWidth = 2; // 그릴 선의 두께를 정했습니다.
 
-// 클릭시 캔버스에서 선이 그려지는 시작점이 달라지게 하기 위해 좌표값이 담긴 배열을 만들었습니다.
-const posX = ["0", "800", "400"];
-const posY = ["0", "800", "400"];
-let ranposX = posX[Math.floor(Math.random() * posX.length)]; // ranpos 함수는 pos 함수의 값을 무작위로 선택합니다.
-let ranposY = posY[Math.floor(Math.random() * posY.length)]; // ranpos 함수는 onClick 함수가 실행됐을때 값이 변해야 하기 때문에 let으로 선언했습니다.
+// // 클릭시 캔버스에서 선이 그려지는 시작점이 달라지게 하기 위해 좌표값이 담긴 배열을 만들었습니다.
+// const posX = ["0", "800", "400"];
+// const posY = ["0", "800", "400"];
+// let ranposX = posX[Math.floor(Math.random() * posX.length)]; // ranpos 함수는 pos 함수의 값을 무작위로 선택합니다.
+// let ranposY = posY[Math.floor(Math.random() * posY.length)]; // ranpos 함수는 onClick 함수가 실행됐을때 값이 변해야 하기 때문에 let으로 선언했습니다.
 
-console.log(ranposX, ranposY);
+// console.log(ranposX, ranposY);
 
-// 선을 그릴때 색을 입히기 위해 다양한 색이 담긴 배열을 만들었습니다.
-const colors = [
-  "#ff3838",
-  "#ffb8b8",
-  "#c56cf0",
-  "#ff9f1a",
-  "#fff200",
-  "#32ff7e",
-  "#7efff5",
-];
+// // 선을 그릴때 색을 입히기 위해 다양한 색이 담긴 배열을 만들었습니다.
+// const colors = [
+//   "#ff3838",
+//   "#ffb8b8",
+//   "#c56cf0",
+//   "#ff9f1a",
+//   "#fff200",
+//   "#32ff7e",
+//   "#7efff5",
+// ];
+
+// function onMouseMove(event) {
+//   // onMouseMove 함수는 addEventListener로 감지한 마우스 움직임 이벤트의 좌표값을 입력받아 선을 그립니다.
+//   ctx.beginPath(); // strokeStyle이 변화될때 그려진 모든 선의 색상이 변경되는 것을 막기위해 선이 그려질때마다 beginPath를 입력합니다.
+//   ctx.moveTo(ranposX, ranposY); //onMouseMove 함수가 첫 실행 될때, 선을 출력하기 위해 moveTo로 ctx의 초기 위치를 정했습니다.
+//   const color = colors[Math.floor(Math.random() * colors.length)]; // color 함수는 colors 배열에서 값을 무작위로 선택합니다.
+//   ctx.strokeStyle = color; // color 함수의 값을 stroke의 색으로 지정합니다.
+//   ctx.lineTo(event.offsetX, event.offsetY);
+//   ctx.stroke();
+// }
+
+// function onClick() {
+//   // onClick 함수는 클릭 이벤트를 감지하여 선의 시작점을 바꿉니다.
+//   ranposX = posX[Math.floor(Math.random() * posX.length)];
+//   ranposY = posY[Math.floor(Math.random() * posY.length)];
+// }
+
+// canvas.addEventListener("mousemove", onMouseMove); // addEventLinstener로 캔버스 내에서 마우스의 클릭을 감지합니다.
+// canvas.addEventListener("click", onClick);
+// ~#2.0
+
+let isPainting = false; // 사용자가 그림을 그리는지 확인하기 위한 변수입니다.
 
 function onMouseMove(event) {
-  // onMouseMove 함수는 addEventListener로 감지한 마우스 움직임 이벤트의 좌표값을 입력받아 선을 그립니다.
-  ctx.beginPath(); // strokeStyle이 변화될때 그려진 모든 선의 색상이 변경되는 것을 막기위해 선이 그려질때마다 beginPath를 입력합니다.
-  ctx.moveTo(ranposX, ranposY); //onMouseMove 함수가 첫 실행 될때, 선을 출력하기 위해 moveTo로 ctx의 초기 위치를 정했습니다.
-  const color = colors[Math.floor(Math.random() * colors.length)]; // color 함수는 colors 배열에서 값을 무작위로 선택합니다.
-  ctx.strokeStyle = color; // color 함수의 값을 stroke의 색으로 지정합니다.
-  ctx.lineTo(event.offsetX, event.offsetY);
-  ctx.stroke();
+  // 마우스가 움직일때 isPainting 변수의 값에 따라 그림을 그리거나, 브러쉬의 위치만 이동시킵니다.
+  if (isPainting) {
+    // if 문에 boolean 값이 들어가는 경우, 그 값이 참일때 if 문이 실행되고 아닐 경우 실행되지 않습니다.
+    ctx.lineTo(event.offsetX, event.offsetY);
+    ctx.stroke();
+    return; // 그림을 그린 후 return을 입력하여 onMouseMove 함수를 종료시킵니다.
+  }
+  ctx.moveTo(event.offsetX, event.offsetY);
 }
 
-function onClick() {
-  // onClick 함수는 클릭 이벤트를 감지하여 선의 시작점을 바꿉니다.
-  ranposX = posX[Math.floor(Math.random() * posX.length)];
-  ranposY = posY[Math.floor(Math.random() * posY.length)];
+function onMouseDown(event) {
+  // 사용자가 마우스를 누르고 있을때, isPainting 변수를 참으로 변경합니다.
+  isPainting = true;
 }
 
-canvas.addEventListener("mousemove", onMouseMove); // addEventLinstener로 캔버스 내에서 마우스의 클릭을 감지합니다.
-canvas.addEventListener("click", onClick);
+function onMouseUp(event) {
+  // 사용자가 마우스를 누르다가 땠을때, isPainting 변수를 거짓으로 변경합니다.
+  isPainting = false;
+}
+
+canvas.addEventListener("mousemove", onMouseMove); // 마우스의 움직임을 감지하고, onMouseMove 함수를 작동합니다.
+canvas.addEventListener("mousedown", onMouseDown); // 마우스 버튼의 눌림을 감지하고, onMouseDown 함수를 작동합니다. (mousedown은 클릭과는 다르며 누르고 있는 상태입니다.)
+canvas.addEventListener("mouseup", onMouseUp); // 마우스의 버튼이 눌리지 않는 것을, onMouseMove 함수를 작동합니다.
+canvas.addEventListener("mouseleave", onMouseUp); // 마우스가 캔버스에서 떠난 것을 감지하고, onMouseMove 함수를 작동합니다. (마우스를 누르고 있는 상태에서 캔버스를 떠났을때, 다시 캔버스르 돌아오면 클릭하지 않아도 그림이 그려지는 버그를 방지합니다.)
