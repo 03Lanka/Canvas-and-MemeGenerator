@@ -88,6 +88,11 @@ canvas.height = 800;
 const lineWidth = document.getElementById("line-width"); // html에서 line=width이라 id가 붙은 input 태그를 lineWidth 상수에 귀속했습니다.
 ctx.lineWidth = lineWidth.value; // 불러온 lineWidth 값을 ctx의 lineWidth 값에 대입합니다.
 
+const color = document.getElementById("color"); // html에서 "color" id 가 붙은 항목을 color 상수에 지정했습니다.
+const colorOptions = Array.from(
+  document.getElementsByClassName("color-option")
+); // html에서 color-option이 붙은 항목을 불러와, 배열로 전환했습니다.
+
 let isPainting = false; // 사용자가 그림을 그리는지 확인하기 위한 변수입니다.
 
 function onMouseMove(event) {
@@ -117,8 +122,26 @@ function onLineWidthChange(event) {
   ctx.lineWidth = event.target.value; // event.target은 이벤트가 발생된 목표입니다.
 }
 
+function onColorChange(event) {
+  // 색상 변화에 대응하는 함수입니다.
+  ctx.beginPath(); // 미리 그려진 캔버스의 선의 색상이 변하지 않게 합니다.
+  ctx.strokeStyle = event.target.value;
+  ctx.fillStyle = event.target.value;
+}
+
+function onColorClick(event) {
+  // 미리 제시된 컬러 팔레트를 클릭할 시 대응하는 합수입니다.
+  const colorValue = event.target.dataset.color; // 반복 사용되는 텍스트가 있어 상수로 지정했습니다.
+  ctx.strokeStyle = colorValue;
+  ctx.fillStyle = colorValue;
+  color.value = colorValue; // html 인풋의 컬러 인디케이터를 사용자가 클릭한 색에 맞춰 변화시킵니다.
+}
+
 canvas.addEventListener("mousemove", onMouseMove); // 마우스의 움직임을 감지하고, onMouseMove 함수를 작동합니다.
 canvas.addEventListener("mousedown", onMouseDown); // 마우스 버튼의 눌림을 감지하고, onMouseDown 함수를 작동합니다. (mousedown은 클릭과는 다르며, 버튼을 누르고 있는 상태입니다.)
 canvas.addEventListener("mouseup", onMouseUp); // 마우스의 버튼이 눌리지 않는 것을, onMouseMove 함수를 작동합니다.
 canvas.addEventListener("mouseleave", onMouseUp); // 마우스가 캔버스에서 떠난 것을 감지하고, onMouseMove 함수를 작동합니다. (마우스를 누르고 있는 상태에서 캔버스를 떠났을때, 다시 캔버스르 돌아오면 클릭하지 않아도 그림이 그려지는 버그를 방지합니다.)
 lineWidth.addEventListener("change", onLineWidthChange); // html 태그의 값이 변할때, onLineWidthChange 함수를 작동합니다.
+color.addEventListener("change", onColorChange); // html 인풋의 색상 값 변화를 감지하고 onColorChange 함수를 작동합니다.
+
+colorOptions.forEach((color) => color.addEventListener("click", onColorClick)); // html 요소 모두에 이벤트리스너를 추가하고, onColorClick 함수를 작동합니다.
