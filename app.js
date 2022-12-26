@@ -132,6 +132,7 @@ function onColorChange(event) {
 function onColorClick(event) {
   // 미리 제시된 컬러 팔레트를 클릭할 시 대응하는 합수입니다.
   const colorValue = event.target.dataset.color; // 반복 사용되는 텍스트가 있어 상수로 지정했습니다.
+  ctx.beginPath(); // 미리 그려진 캔버스의 선의 색상이 변하지 않도록 합니다.
   ctx.strokeStyle = colorValue;
   ctx.fillStyle = colorValue;
   color.value = colorValue; // html 인풋의 컬러 인디케이터를 사용자가 클릭한 색에 맞춰 변화시킵니다.
