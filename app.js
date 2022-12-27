@@ -88,7 +88,9 @@ canvas.height = 800;
 const lineWidth = document.getElementById("line-width"); // html에서 line=width이라 id가 붙은 input 태그를 lineWidth 상수에 귀속했습니다.
 ctx.lineWidth = lineWidth.value; // 불러온 lineWidth 값을 ctx의 lineWidth 값에 대입합니다.
 
-const modeBtn = document.getElementById("mode-btn");
+const modeBtn = document.getElementById("mode-btn"); // 상태 변경 버튼을 지정했습니다.
+const clearBtn = document.getElementById("clear"); // 캔버스 초기화 버튼 지졍했습니다.
+const eraseBtn = document.getElementById("erase"); // 지우기 버튼을 지정했습니다.
 const color = document.getElementById("color"); // html에서 "color" id 가 붙은 항목을 color 상수에 지정했습니다.
 const colorOptions = Array.from(
   document.getElementsByClassName("color-option")
@@ -140,7 +142,7 @@ function onColorClick(event) {
   color.value = colorValue; // html 인풋의 컬러 인디케이터를 사용자가 클릭한 색에 맞춰 변화시킵니다.
 }
 
-function onModeClick(event) {
+function onModeClick() {
   // 그리기 상태를 변경하는 버튼을 눌렀을때 작동하는 함수입니다.
   if (isFilling) {
     isFilling = false;
@@ -151,11 +153,26 @@ function onModeClick(event) {
   }
 }
 
-function onCanvasClick(event) {
+function onCanvasClick() {
   // Fill 상태에서 캔버스를 클릭할때 작동하는 함수입니다.
   if (isFilling) {
     ctx.fillRect(0, 0, 800, 800);
   }
+}
+
+function onClearClick() {
+  // 캔버스 초기화 버튼을 누를때 적동하는 함수입니다.
+  ctx.beginPath();
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, 800, 800);
+}
+
+function onEraseClick() {
+  // 지우기 버튼을 클릭했을때 작동하는 함수입니다.
+  ctx.beginPath();
+  ctx.strokeStyle = "white";
+  isFilling = false;
+  modeBtn.innerText = "Draw";
 }
 
 canvas.addEventListener("mousemove", onMouseMove); // 마우스의 움직임을 감지하고, onMouseMove 함수를 작동합니다.
@@ -168,3 +185,5 @@ color.addEventListener("change", onColorChange); // html 인풋의 색상 값 �
 colorOptions.forEach((color) => color.addEventListener("click", onColorClick)); // html 요소 모두에 이벤트리스너를 추가하고, onColorClick 함수를 작동합니다.
 modeBtn.addEventListener("click", onModeClick); // 그리기 상태 변경 버튼을 누를때 작동됩니다.
 canvas.addEventListener("click", onCanvasClick); // 그리기 상태가 '채우기'일때 캔버스를 클릭하면 작동합니다.
+clearBtn.addEventListener("click", onClearClick); // 캔버스 초기화를 눌렀을때 onClearClick 함수를 실행합니다.
+eraseBtn.addEventListener("click", onEraseClick); // 지우기 버튼을 눌렀을때 onEraseClick 함수를 실행합니다.
