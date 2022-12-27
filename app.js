@@ -88,11 +88,13 @@ canvas.height = 800;
 const lineWidth = document.getElementById("line-width"); // html에서 line=width이라 id가 붙은 input 태그를 lineWidth 상수에 귀속했습니다.
 ctx.lineWidth = lineWidth.value; // 불러온 lineWidth 값을 ctx의 lineWidth 값에 대입합니다.
 
+const modeBtn = document.getElementById("mode-btn");
 const color = document.getElementById("color"); // html에서 "color" id 가 붙은 항목을 color 상수에 지정했습니다.
 const colorOptions = Array.from(
   document.getElementsByClassName("color-option")
 ); // html에서 color-option이 붙은 항목을 불러와, 배열로 전환했습니다.
 
+let isFilling = false; // 현재 그리기 상태를 확인하기 위한 변수입니다.
 let isPainting = false; // 사용자가 그림을 그리는지 확인하기 위한 변수입니다.
 
 function onMouseMove(event) {
@@ -138,6 +140,24 @@ function onColorClick(event) {
   color.value = colorValue; // html 인풋의 컬러 인디케이터를 사용자가 클릭한 색에 맞춰 변화시킵니다.
 }
 
+function onModeClick(event) {
+  // 그리기 상태를 변경하는 버튼을 눌렀을때 작동하는 함수입니다.
+  if (isFilling) {
+    isFilling = false;
+    modeBtn.innerText = "Draw";
+  } else {
+    isFilling = true;
+    modeBtn.innerText = "Fill";
+  }
+}
+
+function onCanvasClick(event) {
+  // Fill 상태에서 캔버스를 클릭할때 작동하는 함수입니다.
+  if (isFilling) {
+    ctx.fillRect(0, 0, 800, 800);
+  }
+}
+
 canvas.addEventListener("mousemove", onMouseMove); // 마우스의 움직임을 감지하고, onMouseMove 함수를 작동합니다.
 canvas.addEventListener("mousedown", onMouseDown); // 마우스 버튼의 눌림을 감지하고, onMouseDown 함수를 작동합니다. (mousedown은 클릭과는 다르며, 버튼을 누르고 있는 상태입니다.)
 canvas.addEventListener("mouseup", onMouseUp); // 마우스의 버튼이 눌리지 않는 것을, onMouseMove 함수를 작동합니다.
@@ -146,3 +166,5 @@ lineWidth.addEventListener("change", onLineWidthChange); // html 태그의 값�
 color.addEventListener("change", onColorChange); // html 인풋의 색상 값 변화를 감지하고 onColorChange 함수를 작동합니다.
 
 colorOptions.forEach((color) => color.addEventListener("click", onColorClick)); // html 요소 모두에 이벤트리스너를 추가하고, onColorClick 함수를 작동합니다.
+modeBtn.addEventListener("click", onModeClick); // 그리기 상태 변경 버튼을 누를때 작동됩니다.
+canvas.addEventListener("click", onCanvasClick); // 그리기 상태가 '채우기'일때 캔버스를 클릭하면 작동합니다.
