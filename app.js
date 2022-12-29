@@ -87,6 +87,7 @@ canvas.height = 800;
 
 const lineWidth = document.getElementById("line-width"); // html에서 line=width이라 id가 붙은 input 태그를 lineWidth 상수에 귀속했습니다.
 ctx.lineWidth = lineWidth.value; // 불러온 lineWidth 값을 ctx의 lineWidth 값에 대입합니다.
+ctx.lineCap = "round"; // 선의 끝을 둥그렇게 처리합니다.
 
 const modeBtn = document.getElementById("mode-btn"); // 상태 변경 버튼을 지정했습니다.
 const clearBtn = document.getElementById("clear"); // 캔버스 초기화 버튼 지졍했습니다.
@@ -96,6 +97,7 @@ const colorOptions = Array.from(
   document.getElementsByClassName("color-option")
 ); // html에서 color-option이 붙은 항목을 불러와, 배열로 전환했습니다.
 const fileInput = document.getElementById("file"); // html에서 파일을 넣는 input을 상수에 지정했습니다.
+const textInput = document.getElementById("text"); // html에서 텍스트를 입력받는 input을 상수에 지정했습니다.
 
 let isFilling = false; // 현재 그리기 상태를 확인하기 위한 변수입니다.
 let isPainting = false; // 사용자가 그림을 그리는지 확인하기 위한 변수입니다.
@@ -189,6 +191,16 @@ function onFileChange(event) {
   };
 }
 
+function onDoubleClick(event) {
+  // 캔버스가 더블 클릭됐을때 작동하는 함수입니다.
+  ctx.save(); // 텍스트가 입력된 후에 lineWidth를 되돌리기 위해 현재 값을 저장합니다.
+  const text = textInput.value; // 텍스트를 입력하기 위해 input 내의 값을 불러옵니다.
+  ctx.lineWidth = 1; // 글씨가 잘 보이게 하기 위해 두께를 1로 설정합니다.
+  ctx.font = "68px serif"; // 폰트와 크기를 설정합니다.
+  ctx.fillText(text, event.offsetX, event.offsetY);
+  ctx.restore(); // 텍스트가 입력 된후 두께(저장된 설정)를 되돌립니다.
+}
+
 canvas.addEventListener("mousemove", onMouseMove); // 마우스의 움직임을 감지하고, onMouseMove 함수를 작동합니다.
 canvas.addEventListener("mousedown", onMouseDown); // 마우스 버튼의 눌림을 감지하고, onMouseDown 함수를 작동합니다. (mousedown은 클릭과는 다르며, 버튼을 누르고 있는 상태입니다.)
 canvas.addEventListener("mouseup", onMouseUp); // 마우스의 버튼이 눌리지 않는 것을, onMouseMove 함수를 작동합니다.
@@ -203,3 +215,4 @@ clearBtn.addEventListener("click", onClearClick); // 캔버스 초기화를 눌�
 eraseBtn.addEventListener("click", onEraseClick); // 지우기 버튼을 눌렀을때 onEraseClick 함수를 실행합니다.
 fileInput.addEventListener("change", onFileChange); // fileInput이 변화할떄 onFileChange 함수를 작동합니다.
 // = fileInput.change = function(event) {const file = event.target.files[0];};
+canvas.addEventListener("dblclick", onDoubleClick); // 캔버스가 더블 클릭됐을때, onDoubleClick 함수를 작동합니다.
