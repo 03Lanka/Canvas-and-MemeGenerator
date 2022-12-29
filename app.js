@@ -95,6 +95,7 @@ const color = document.getElementById("color"); // html에서 "color" id 가 붙
 const colorOptions = Array.from(
   document.getElementsByClassName("color-option")
 ); // html에서 color-option이 붙은 항목을 불러와, 배열로 전환했습니다.
+const fileInput = document.getElementById("file"); // html에서 파일을 넣는 input을 상수에 지정했습니다.
 
 let isFilling = false; // 현재 그리기 상태를 확인하기 위한 변수입니다.
 let isPainting = false; // 사용자가 그림을 그리는지 확인하기 위한 변수입니다.
@@ -175,6 +176,19 @@ function onEraseClick() {
   modeBtn.innerText = "Draw";
 }
 
+function onFileChange(event) {
+  // fileInput 상수의 값이 변화할때 작동하는 함수입니다.
+  const file = event.target.files[0]; // fileInput 상수의 값내의 파일을 저장합니다.
+  const url = URL.createObjectURL(file); // 저장한 파일을 볼 수 있는 url을 생성합니다.
+  const image = new Image(); // html의 <img /> 와 동일한 문법입니다.
+  image.src = url; // src="" 와 동일합니다.
+  image.onload = function () {
+    // addEventListener를 원라인 함수로 작성하는 방법입니다.
+    ctx.drawImage(image, 0, 0, 800, 800);
+    fileInput.value = null; // 파일이 입력된 후에 input의 인디케이터 표시값을 null로 표기합니다. (사용자가 파일을 다시 넣을 수 있게 합니다.)
+  };
+}
+
 canvas.addEventListener("mousemove", onMouseMove); // 마우스의 움직임을 감지하고, onMouseMove 함수를 작동합니다.
 canvas.addEventListener("mousedown", onMouseDown); // 마우스 버튼의 눌림을 감지하고, onMouseDown 함수를 작동합니다. (mousedown은 클릭과는 다르며, 버튼을 누르고 있는 상태입니다.)
 canvas.addEventListener("mouseup", onMouseUp); // 마우스의 버튼이 눌리지 않는 것을, onMouseMove 함수를 작동합니다.
@@ -187,3 +201,5 @@ modeBtn.addEventListener("click", onModeClick); // 그리기 상태 변경 버�
 canvas.addEventListener("click", onCanvasClick); // 그리기 상태가 '채우기'일때 캔버스를 클릭하면 작동합니다.
 clearBtn.addEventListener("click", onClearClick); // 캔버스 초기화를 눌렀을때 onClearClick 함수를 실행합니다.
 eraseBtn.addEventListener("click", onEraseClick); // 지우기 버튼을 눌렀을때 onEraseClick 함수를 실행합니다.
+fileInput.addEventListener("change", onFileChange); // fileInput이 변화할떄 onFileChange 함수를 작동합니다.
+// = fileInput.change = function(event) {const file = event.target.files[0];};
