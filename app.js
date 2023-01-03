@@ -98,6 +98,7 @@ const colorOptions = Array.from(
 ); // html에서 color-option이 붙은 항목을 불러와, 배열로 전환했습니다.
 const fileInput = document.getElementById("file"); // html에서 파일을 넣는 input을 상수에 지정했습니다.
 const textInput = document.getElementById("text"); // html에서 텍스트를 입력받는 input을 상수에 지정했습니다.
+const saveBtn = document.getElementById("save"); // html에서 save image 버튼을 불러옵니다.
 
 let isFilling = false; // 현재 그리기 상태를 확인하기 위한 변수입니다.
 let isPainting = false; // 사용자가 그림을 그리는지 확인하기 위한 변수입니다.
@@ -201,6 +202,15 @@ function onDoubleClick(event) {
   ctx.restore(); // 텍스트가 입력 된후 두께(저장된 설정)를 되돌립니다.
 }
 
+function onSaveClick() {
+  // 저장하기 버튼이 눌렸을때 작동합니다.
+  const url = canvas.toDataURL();
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = "myDrawing.png";
+  anchor.click();
+}
+
 canvas.addEventListener("mousemove", onMouseMove); // 마우스의 움직임을 감지하고, onMouseMove 함수를 작동합니다.
 canvas.addEventListener("mousedown", onMouseDown); // 마우스 버튼의 눌림을 감지하고, onMouseDown 함수를 작동합니다. (mousedown은 클릭과는 다르며, 버튼을 누르고 있는 상태입니다.)
 canvas.addEventListener("mouseup", onMouseUp); // 마우스의 버튼이 눌리지 않는 것을, onMouseMove 함수를 작동합니다.
@@ -216,3 +226,4 @@ eraseBtn.addEventListener("click", onEraseClick); // 지우기 버튼을 눌렀�
 fileInput.addEventListener("change", onFileChange); // fileInput이 변화할떄 onFileChange 함수를 작동합니다.
 // = fileInput.change = function(event) {const file = event.target.files[0];};
 canvas.addEventListener("dblclick", onDoubleClick); // 캔버스가 더블 클릭됐을때, onDoubleClick 함수를 작동합니다.
+saveBtn.addEventListener("click", onSaveClick); // 저장하기 버튼을 눌렀을때 그림을 저장합니다.
