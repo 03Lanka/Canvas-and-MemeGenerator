@@ -73,8 +73,10 @@
         data-color="#e67e22"
       ></div>
     </div>
+
     <!-- 캔버스 -->
     <canvas></canvas>
+
     <div class="btns">
       <!-- 줄 넓이 인풋 -->
       <input
@@ -87,14 +89,22 @@
       />
       <!-- 그리기 상태 변경용 버튼 -->
       <button id="mode-btn">Draw</button>
+
       <!-- 초기화 버튼 -->
       <button id="clear">Clear</button>
+
       <!-- 지우기 버튼 -->
       <button id="erase">Erase</button>
+
       <!-- 사진 넣는 인풋 -->
-      <input type="file" accept="image/*" id="file" />
+      <label for="file">
+        Add Photo
+        <input type="file" accept="image/*" id="file" />
+      </label>
+
       <!-- 텍스트 넣는 인풋 -->
-      <input type="text" placeholder="Write and then Double Click" id="text" />
+      <input type="text" placeholder="Add Text Here!" id="text" />
+
       <!-- 이미지 저장 버튼 -->
       <button id="save">Save Image</button>
     </div>
